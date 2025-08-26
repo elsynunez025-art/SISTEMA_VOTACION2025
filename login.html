@@ -18,7 +18,7 @@
   <h2>Registro / Login</h2>
   <input type="text" id="nombre" placeholder="Nombre" required>
   <input type="text" id="apellido" placeholder="Apellido" required>
-  <input type="date" id="nacimiento" placeholder="Fecha de nacimiento" required>
+  <input type="text" id="nacimiento" placeholder="Fecha de nacimiento (AAAA-MM-DD)" required>
   <input type="email" id="email" placeholder="Email" required>
   <button type="submit">Ingresar</button>
   <div class="error" id="error"></div>
@@ -34,11 +34,17 @@ form.addEventListener("submit", async (e) => {
 
   const nombre = document.getElementById("nombre").value.trim();
   const apellido = document.getElementById("apellido").value.trim();
-  const nacimiento = document.getElementById("nacimiento").value;
+  const nacimiento = document.getElementById("nacimiento").value.trim();
   const email = document.getElementById("email").value.trim();
 
   if (!nombre || !apellido || !nacimiento || !email) {
     errorDiv.textContent = "Completa todos los campos";
+    return;
+  }
+
+  // Validar formato simple YYYY-MM-DD
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(nacimiento)) {
+    errorDiv.textContent = "Ingresa la fecha en formato AAAA-MM-DD";
     return;
   }
 
@@ -50,8 +56,10 @@ form.addEventListener("submit", async (e) => {
   }
 
   try {
+    const API_URL = window.location.origin; // detecta URL automáticamente
+
     // Registrar usuario
-    let res = await fetch("http://localhost:3000/api/register", {
+    let res = await fetch(`${API_URL}/api/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombre, apellido, nacimiento, email })
@@ -64,7 +72,7 @@ form.addEventListener("submit", async (e) => {
     }
 
     // Login
-    res = await fetch("http://localhost:3000/api/login", {
+    res = await fetch(`${API_URL}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombre, apellido, nacimiento, email })
@@ -80,6 +88,7 @@ form.addEventListener("submit", async (e) => {
         nacimiento
       }));
 
+      // Redirigir a index.html
       window.location.href = "index.html";
     } else {
       errorDiv.textContent = data.message || "Error en login";
