@@ -2,101 +2,634 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Login / Registro</title>
+<title>Sistema de Votación</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-  body { font-family: Arial; background: #f0f4f8; display: flex; justify-content: center; align-items: center; height: 100vh; }
-  form { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 320px; }
-  input, button { width: 100%; padding: 10px; margin: 8px 0; border-radius: 6px; border: 1px solid #ccc; }
-  button { background: #007bff; color: white; font-weight: 700; border: none; cursor: pointer; }
-  button:hover { background: #0056b3; }
-  .error { color: red; font-weight: 700; margin-top: 10px; }
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+  body {
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(135deg, #00bcd4, #b2ebf2, #ffffff);
+  margin: 0;
+  padding: 20px;
+  color: #013b6d;
+}
+
+
+ header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  background: white;
+  padding: 10px 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  position: relative; /* importante para que el logo "salga" del header */
+  overflow: visible;  /* deja que el logo sobresalga */
+}
+.header-content h1 { font-size: 1.5em; font-weight: 700; color: #01579b; margin: 0; margin-left: 100px; }
+.logo-container {
+  position: absolute; /* se posiciona respecto al header */
+  bottom: -145px; /* hace que “salga” del header */
+  left: -50px;   /* ajusta la posición horizontal */
+}
+
+.logo-container img {
+  height: 250px; /* ajusta el tamaño */
+  object-fit: contain;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+}
+
+
+  .profile-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background 0.3s ease-in-out;
+  }
+
+  .profile-container:hover {
+    background: #f1f8e9;
+  }
+
+  .profile-container img {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #01579b;
+    transition: transform 0.3s ease-in-out, border-color 0.3s ease-in-out;
+  }
+
+  .profile-container:hover img {
+    transform: scale(1.1);
+    border-color: #007bff;
+  }
+
+  .message {
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: none;
+    font-weight: bold;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .success {
+    background: #e8f5e9;
+    color: #388e3c;
+  }
+
+  .error {
+    background: #ffebee;
+    color: #d32f2f;
+  }
+
+  .partidos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .card {
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .card img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    border-radius: 50%;
+    border: 3px solid #eee;
+    margin-bottom: 10px;
+  }
+
+  .card h2 {
+    font-size: 1.1em;
+    margin: 10px 0;
+    color: #333;
+    font-weight: 700;
+  }
+
+  .card .info-box {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    width: 250px;
+    text-align: left;
+    white-space: pre-wrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 10;
+  }
+
+  .card:hover .info-box {
+    opacity: 1;
+  }
+  
+  .info-box img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 10px;
+    float: left;
+    object-fit: cover;
+  }
+  
+  .info-box h3 {
+    margin: 0 0 5px 0;
+    font-size: 1em;
+  }
+  
+  .info-box p {
+    margin: 0;
+    font-size: 0.9em;
+  }
+
+  .card button {
+    width: 100%;
+    padding: 12px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+    margin-top: 10px;
+  }
+  
+  /* Estilos específicos para cada botón */
+  .card#card-PN button { background: #1e88e5; }
+  .card#card-PN button:hover { background: #0d47a1; }
+  
+  .card#card-LIBRE button { background: #e74c3c; }
+  .card#card-LIBRE button:hover { background: #c0392b; }
+  
+  .card#card-PLH button { background: #e67e22; }
+  .card#card-PLH button:hover { background: #d35400; }
+  
+  .card#card-Otro button { background: #34495e; }
+  .card#card-Otro button:hover { background: #2c3e50; }
+  
+  .card#card-Ninguno button { background: #95a5a6; }
+  .card#card-Ninguno button:hover { background: #7f8c8d; }
+
+  .card .more-info {
+    display: block;
+    margin-top: 10px;
+    color: #01579b;
+    font-size: 0.9em;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .card .more-info:hover {
+    color: #0288d1;
+    text-decoration: underline;
+  }
+
+  .acciones {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .acciones button {
+    margin: 8px;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .acciones button#logoutBtn {
+    background: #007bff;
+  }
+  
+  .acciones button#logoutBtn:hover {
+    background: #0056b3;
+  }
+  
+  .acciones button#deleteBtn {
+    background: #546e7a;
+  }
+  
+  .acciones button#deleteBtn:hover {
+    background: #78909c;
+  }
+  
+  .acciones button:disabled {
+    background: #bdbdbd;
+    cursor: not-allowed;
+  }
+
+  canvas {
+    max-width: 800px; /* Aumenta el tamaño */
+    height: 450px; /* Aumenta el tamaño */
+    margin: 30px auto;
+    display: block;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .vote-count {
+    text-align: center;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #01579b;
+    margin-bottom: 20px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+   .salir {
+    margin: 8px;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #1e88e5;
+  }
+  .salir:hover{
+    background:#0d47a1;
+    
+  }
+  
 </style>
 </head>
 <body>
 
-<form id="loginForm">
-  <h2>Registro / Login</h2>
-  <input type="text" id="nombre" placeholder="Nombre" required>
-  <input type="text" id="apellido" placeholder="Apellido" required>
-  <input type="text" id="nacimiento" placeholder="Fecha de nacimiento (AAAA-MM-DD)" required>
-  <input type="email" id="email" placeholder="Email" required>
-  <button type="submit">Ingresar</button>
-  <div class="error" id="error"></div>
-</form>
+<header>
+  <div class="header-content">
+    <div class="logo-container">
+      <img src="image.png" alt="Logo de Honduras">
+    </div>
+    <h1>Sistema de Votación HN</h1>
+  </div>
+  <div class="profile-container" onclick="document.getElementById('profile-file-input').click();">
+    <img id="profile-pic" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Perfil">
+    <input type="file" id="profile-file-input" accept="image/*" onchange="changeProfilePic(event)" />
+    <span id="profile-name">Usuario</span>
+  </div>
+  <button onclick="logout()" id="logoutBtn" class="salir">Cerrar sesión</button>
+</header>
+
+<div id="message" class="message"></div>
+<div id="userVoteInfo" style="text-align:center;font-weight:bold;margin-bottom:15px;font-size:1.1em;color:#007bff;"></div>
+<div id="totalVotersCount" class="vote-count"></div>
+
+<div class="partidos">
+  <div class="card" id="card-PN">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/National_Party_of_Honduras_Logo.svg/2560px-National_Party_of_Honduras_Logo.svg.png" alt="PN">
+    <h2>Partido Nacional</h2>
+    <div class="info-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Nasry_Asfura.jpg" alt="Foto de Nasry Asfura">
+      <h3>Nasry Asfura</h3>
+      <p>Partido de derecha y uno de los más antiguos de Honduras.</p>
+    </div>
+    <button onclick="vote('PN')">Votar</button>
+    <a href="#" class="more-info">Ver más información</a>
+  </div>
+  <div class="card" id="card-LIBRE">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Libertad_y_Refundacion_Party_Logo.svg/800px-Libertad_y_Refundaci%C3%B3n_Party_Logo.svg.png" alt="LIBRE">
+    <h2>Partido LIBRE</h2>
+    <div class="info-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Xiomara_Castro.png/800px-Xiomara_Castro.png" alt="Foto de Xiomara Castro">
+      <h3>Xiomara Castro</h3>
+      <p>Partido de izquierda, fundado por el expresidente Manuel Zelaya.</p>
+    </div>
+    <button onclick="vote('LIBRE')">Votar</button>
+    <a href="#" class="more-info">Ver más información</a>
+  </div>
+  <div class="card" id="card-PLH">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Liberal_Party_of_Honduras_flag.svg/600px-Liberal_Party_of_Honduras_flag.svg.png" alt="PLH">
+    <h2>Partido Liberal</h2>
+    <div class="info-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Yani_Rosenthal_Hidalgo.jpg" alt="Foto de Yani Rosenthal">
+      <h3>Yani Rosenthal</h3>
+      <p>Partido de centro-derecha, histórico en la política hondureña.</p>
+    </div>
+    <button onclick="vote('PLH')">Votar</button>
+    <a href="#" class="more-info">Ver más información</a>
+  </div>
+  <div class="card" id="card-Otro">
+    <img src="https://cdn-icons-png.flaticon.com/512/32/32386.png" alt="Otro">
+    <h2>Otro</h2>
+    <div class="info-box">
+      <h3>N/A</h3>
+      <p>Voto por un partido no listado.</p>
+    </div>
+    <button onclick="vote('Otro')">Votar</button>
+    <a href="#" class="more-info">Ver más información</a>
+  </div>
+  <div class="card" id="card-Ninguno">
+    <img src="https://cdn-icons-png.flaticon.com/512/3596/3596160.png" alt="Ninguno">
+    <h2>Ninguno</h2>
+    <div class="info-box">
+      <h3>N/A</h3>
+      <p>Voto de abstención o nulo.</p>
+    </div>
+    <button onclick="vote('Ninguno')">Votar</button>
+    <a href="#" class="more-info">Ver más información</a>
+  </div>
+</div>
+
+<canvas id="voteChart"></canvas>
+<canvas id="pieChart"></canvas>
+
+<div class="acciones">
+  <button onclick="deleteVote()" id="deleteBtn">Eliminar voto (máx 4 veces)</button>
+</div>
 
 <script>
-const form = document.getElementById("loginForm");
-const errorDiv = document.getElementById("error");
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  errorDiv.textContent = "";
-
-  const nombre = document.getElementById("nombre").value.trim();
-  const apellido = document.getElementById("apellido").value.trim();
-  const nacimiento = document.getElementById("nacimiento").value.trim();
-  const email = document.getElementById("email").value.trim();
-
-  if (!nombre || !apellido || !nacimiento || !email) {
-    errorDiv.textContent = "Completa todos los campos";
+document.addEventListener('DOMContentLoaded', () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user) {
+    window.location.href = "login.html";
     return;
   }
 
-  // Validar formato simple YYYY-MM-DD
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(nacimiento)) {
-    errorDiv.textContent = "Ingresa la fecha en formato AAAA-MM-DD";
-    return;
-  }
+  const fullName = user.name;
+  const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+  document.getElementById("profile-name").textContent = fullName;
+  document.getElementById("profile-pic").src = user.pic || defaultAvatar;
 
-  // Verificar edad >= 18 años
-  const edad = new Date().getFullYear() - new Date(nacimiento).getFullYear();
-  if (edad < 18) {
-    errorDiv.textContent = "Debes ser mayor de 18 años para votar";
-    return;
-  }
+  let alreadyVoted = localStorage.getItem("alreadyVoted_" + user.userId) || null;
+  let deleteCount = parseInt(localStorage.getItem("deleteCount_" + user.userId)) || 0;
+  const deleteBtn = document.getElementById("deleteBtn");
 
-  try {
-    const API_URL = window.location.origin; // detecta URL automáticamente
-
-    // Registrar usuario
-    let res = await fetch(`${API_URL}/api/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombre, apellido, nacimiento, email })
-    });
-    let data = await res.json();
-
-    if (res.status === 400 && data.message === "Email ya registrado con otros datos") {
-      errorDiv.textContent = data.message;
-      return;
+  const partidosInfo = {
+    PN: {
+      nombre: "Partido Nacional",
+      candidato: "Nasry Asfura",
+      descripcion: "Partido de derecha y uno de los más antiguos de Honduras."
+    },
+    LIBRE: {
+      nombre: "Partido LIBRE",
+      candidato: "Xiomara Castro",
+      descripcion: "Partido de izquierda, fundado por el expresidente Manuel Zelaya."
+    },
+    PLH: {
+      nombre: "Partido Liberal",
+      candidato: "Yani Rosenthal",
+      descripcion: "Partido de centro-derecha, histórico en la política hondureña."
+    },
+    Otro: {
+      nombre: "Otro partido",
+      candidato: "N/A",
+      descripcion: "Voto por un partido no listado."
+    },
+    Ninguno: {
+      nombre: "Ninguno",
+      candidato: "N/A",
+      descripcion: "Voto de abstención o nulo."
     }
+  };
 
-    // Login
-    res = await fetch(`${API_URL}/api/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombre, apellido, nacimiento, email })
-    });
-    data = await res.json();
+  function showMessage(msg, type){
+    const div = document.getElementById("message");
+    div.textContent = msg;
+    div.className = `message ${type}`;
+    div.style.display = "block";
+    setTimeout(() => div.style.display = "none", 3000);
+  }
 
-    if (res.ok) {
-      // Guardar usuario en localStorage
-      localStorage.setItem("user", JSON.stringify({
-        userId: data.userId,
-        name: nombre + " " + apellido,
-        email,
-        nacimiento
-      }));
-
-      // Redirigir a index.html
-      window.location.href = "index.html";
+  function updateDeleteBtn(){
+    if(alreadyVoted){
+      deleteBtn.disabled = deleteCount >= 4;
+      deleteBtn.textContent = `Eliminar voto (${deleteCount}/4)`;
+      if (deleteCount >= 4) {
+        deleteBtn.textContent = 'Límite de eliminaciones alcanzado';
+      }
+      deleteBtn.style.opacity = deleteCount >= 4 ? 0.5 : 1;
     } else {
-      errorDiv.textContent = data.message || "Error en login";
+      deleteBtn.disabled = true;
+      deleteBtn.textContent = 'Eliminar voto (0/4)';
+      deleteBtn.style.opacity = 0.5;
     }
-  } catch (error) {
-    errorDiv.textContent = "Error conectando con el servidor";
-    console.error(error);
   }
+
+  function updateUserInfo(){
+    const info = document.getElementById("userVoteInfo");
+    info.textContent = alreadyVoted ? `Actualmente has votado por: ${partidosInfo[alreadyVoted].nombre}` : "Aún no has votado.";
+  }
+
+  async function fetchVotes(){
+    try {
+      const res = await fetch("http://localhost:3000/api/votes");
+      if (!res.ok) throw new Error("Error en la respuesta del servidor");
+      const voteData = await res.json();
+      updateCharts(voteData);
+      updateUserInfo();
+      updateDeleteBtn();
+      
+      const totalVoters = Object.values(voteData).reduce((sum, current) => sum + current, 0);
+      document.getElementById("totalVotersCount").textContent = `Total de votos: ${totalVoters}`;
+    } catch(err){
+      showMessage("Error cargando votos. Asegúrate de que el servidor esté encendido.","error");
+      console.error(err);
+    }
+  }
+
+  let barChart, pieChart;
+
+  function updateCharts(voteData){
+    const labels = ["Partido Nacional", "LIBRE", "Partido Liberal", "Otro", "Ninguno"];
+    const data = [voteData.PN, voteData.LIBRE, voteData.PLH, voteData.Otro, voteData.Ninguno];
+    const colors = ["#1e88e5", "#e74c3c", "#e67e22", "#34495e", "#95a5a6"];
+    const userVoteColor = "#ffb300";
+
+    const barColors = labels.map((label, index) => {
+      const partyKey = Object.keys(partidosInfo)[index];
+      if (alreadyVoted && partyKey === alreadyVoted) {
+        return userVoteColor;
+      }
+      return colors[index];
+    });
+
+    const ctxBar = document.getElementById("voteChart").getContext("2d");
+    if(barChart) barChart.destroy();
+    barChart = new Chart(ctxBar, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Votos totales",
+          data: data,
+          backgroundColor: barColors,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: 'Conteo de Votos (Gráfico de Barras)', font: { size: 16, weight: 'bold' } }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Número de Votos' }
+          }
+        }
+      }
+    });
+
+    const ctxPie = document.getElementById("pieChart").getContext("2d");
+    if(pieChart) pieChart.destroy();
+    pieChart = new Chart(ctxPie, {
+      type: "pie",
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: colors,
+          hoverOffset: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: 'Distribución de Votos (Gráfico Circular)', font: { size: 16, weight: 'bold' } }
+        }
+      }
+    });
+  }
+
+  window.vote = async function(party){
+    if(alreadyVoted && alreadyVoted !== party){
+      return showMessage("No puedes votar por dos partidos distintos.","error");
+    }
+    if (alreadyVoted === party) {
+        return showMessage("Ya has votado por este partido.", "error");
+    }
+
+    try {
+      const res = await fetch("http://localhost:3000/api/vote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.userId, party })
+      });
+      const data = await res.json();
+      if(res.ok){
+        alreadyVoted = party;
+        localStorage.setItem("alreadyVoted_" + user.userId, party);
+        showMessage(`Voto registrado para ${partidosInfo[party].nombre}.`,"success");
+        fetchVotes();
+      } else {
+        showMessage(data.message || "Error al registrar el voto.","error");
+      }
+    } catch(err){
+      showMessage("Error enviando voto. El servidor no responde.","error");
+      console.error(err);
+    }
+  }
+
+  window.deleteVote = async function(){
+    if(!alreadyVoted) return showMessage("No tienes voto para eliminar.","error");
+    if(deleteCount >= 4) return showMessage("Has alcanzado el límite de 4 eliminaciones.","error");
+
+    try {
+      const res = await fetch("http://localhost:3000/api/vote", {
+        method: "DELETE",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ userId: user.userId })
+      });
+      if(res.ok){
+        showMessage(`Voto eliminado de ${partidosInfo[alreadyVoted].nombre}.`,"success");
+        alreadyVoted = null;
+        localStorage.removeItem("alreadyVoted_" + user.userId);
+        deleteCount++;
+        localStorage.setItem("deleteCount_" + user.userId, deleteCount);
+        updateDeleteBtn(); // Actualiza el contador en el botón
+        fetchVotes();
+      } else {
+        const data = await res.json();
+        showMessage(data.message || "Error al eliminar voto.","error");
+      }
+    } catch(err){
+      showMessage("Error al eliminar voto. El servidor no responde.","error");
+      console.error(err);
+    }
+  }
+  
+  window.changeProfilePic = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const newPicUrl = e.target.result;
+      const userData = JSON.parse(localStorage.getItem("user"));
+      userData.pic = newPicUrl;
+      localStorage.setItem("user", JSON.stringify(userData));
+      document.getElementById("profile-pic").src = newPicUrl;
+      showMessage("Foto de perfil actualizada exitosamente.", "success");
+    };
+    reader.readAsDataURL(file);
+  };
+  
+  window.changeProfile = function(){
+    const newName = prompt("Nuevo nombre:");
+    if (!newName) return;
+    const userData = JSON.parse(localStorage.getItem("user"));
+    userData.name = newName;
+    localStorage.setItem("user", JSON.stringify(userData));
+    document.getElementById("profile-name").textContent = newName;
+    showMessage("Nombre de perfil actualizado exitosamente.", "success");
+  };
+
+  window.logout = function(){
+    localStorage.removeItem("user");
+    window.location.href = "login.html";
+  }
+
+  fetchVotes();
 });
 </script>
 
