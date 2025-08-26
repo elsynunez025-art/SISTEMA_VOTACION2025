@@ -442,7 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateDeleteBtn(){
     if(alreadyVoted){
       deleteBtn.disabled = deleteCount >= 4;
-      deleteBtn.textContent = `Eliminar voto (${deleteCount}/4)`;
+      deleteBtn.textContent = `Eliminar voto (${deleteCount}/3)`;
       if (deleteCount >= 4) {
         deleteBtn.textContent = 'Límite de eliminaciones alcanzado';
       }
