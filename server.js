@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -121,4 +121,5 @@ app.delete('/api/vote', (req, res) => {
 // Inicia el servidor
 app.listen(port, () => {
   console.log(`Servidor de votación corriendo en http://localhost:${port}`);
+
 });
