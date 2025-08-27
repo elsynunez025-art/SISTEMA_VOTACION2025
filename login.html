@@ -20,101 +20,101 @@ body {
 }
 
 /* La bandera de Honduras como un patrón sutil de fondo */
-body::before { /* Este pseudoelemento lo usaremos para una de las guacamayas */
+body::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    /* URL de una bandera de Honduras. */
     background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmcBUewPuiDIZrjhXTqafd_Vp417I_ZTR9LQ&s');
     background-size: 50% auto;
     background-position: center;
     background-repeat: repeat;
     opacity: 0.08;
-    z-index: -2; /* Enviamos la bandera más al fondo para que las guacamayas estén por encima */
+    z-index: -2;
 }
 
-/* Guacamaya grande saliendo de abajo-derecha */
+/* Guacamaya grande saliendo de arriba-izquierda */
 .macaw-1 {
     content: '';
     position: absolute;
-    bottom: -150px;
-    right: -150px;
+    top: -200px;  /* Inicia fuera de la pantalla por arriba */
+    left: -200px; /* Inicia fuera de la pantalla por la izquierda */
     width: 300px; /* Tamaño grande */
     height: 300px;
-    background-image: url('im.png');
+    background-image: url('https://png.pngtree.com/png-clipart/20230429/ourmid/pngtree-isolated-scarlet-macaw-parrot-flying-on-transparent-png-image_6745591.png');
     background-size: contain;
     background-repeat: no-repeat;
     z-index: -1;
     opacity: 0.9;
-    animation: fly-in-large 2.5s forwards ease-out;
+    animation: fly-across-large 5s forwards ease-in-out;
     filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
-    
-    animation-delay: 0s; /* Empieza inmediatamente */
+    animation-delay: 0s;
+    transform: rotate(20deg); /* Rotación para volar hacia abajo-derecha */
 }
 
-/* Guacamaya mediana saliendo de abajo-derecha */
+/* Guacamaya mediana saliendo de arriba-izquierda */
 .macaw-2 {
     content: '';
     position: absolute;
-    bottom: -50px;
-    right: -80px;
-    width: 400px; /* Tamaño mediano */
-    height: 200px;
-    background-image: url('im.png');
+    top: -150px;
+    left: -150px;
+    width: 250px; /* Tamaño mediano */
+    height: 250px;
+    background-image: url('https://png.pngtree.com/png-clipart/20230429/ourmid/pngtree-isolated-scarlet-macaw-parrot-flying-on-transparent-png-image_6745591.png');
     background-size: contain;
     background-repeat: no-repeat;
     z-index: -1;
     opacity: 0.85;
-    animation: fly-in-medium 2.8s forwards ease-in-out;
+    animation: fly-across-medium 5.5s forwards ease-in-out;
     filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
-  
-    animation-delay: 0.5s; /* Empieza un poco después */
+    animation-delay: 0.5s;
+    transform: rotate(15deg); /* Rotación para volar hacia abajo-derecha */
 }
 
-/* Guacamaya pequeña saliendo de abajo-derecha */
+/* Guacamaya pequeña saliendo de arriba-izquierda */
 .macaw-3 {
     content: '';
     position: absolute;
-    bottom: -50px;
-    right: -0px;
-    width: 120px; /* Tamaño pequeño */
-    height: 120px;
-    background-image: url('im.png');
+    top: -100px;
+    left: -100px;
+    width: 180px; /* Tamaño pequeño */
+    height: 180px;
+    background-image: url('https://png.pngtree.com/png-clipart/20230429/ourmid/pngtree-isolated-scarlet-macaw-parrot-flying-on-transparent-png-image_6745591.png');
     background-size: contain;
     background-repeat: no-repeat;
     z-index: -1;
     opacity: 0.8;
-    animation: fly-in-small 3s forwards ease-out;
+    animation: fly-across-small 6s forwards ease-in-out;
     filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.2));
-  
-    animation-delay: 1s; /* Empieza más tarde */
+    animation-delay: 1s;
+    transform: rotate(10deg); /* Rotación para volar hacia abajo-derecha */
 }
 
-/* Animación para la guacamaya grande */
-@keyframes fly-in-large {
+/* --- Animaciones corregidas para que crucen la pantalla --- */
+/* Las guacamayas salen de arriba-izquierda y van hacia abajo-derecha */
+@keyframes fly-across-large {
     to {
-        bottom: 80px;
-        right: 40px;
-        
+        top: calc(100vh + 200px);  /* Sale por abajo */
+        left: calc(100vw + 200px); /* Sale por la derecha */
+        transform: rotate(20deg);
     }
 }
 
-/* Animación para la guacamaya mediana */
-@keyframes fly-in-medium {
+@keyframes fly-across-medium {
     to {
-        bottom: 120px; /* Posición diferente */
-        right: 80px;
+        top: calc(100vh + 150px);
+        left: calc(100vw + 150px);
+        transform: rotate(15deg);
     }
 }
 
-/* Animación para la guacamaya pequeña */
-@keyframes fly-in-small {
+@keyframes fly-across-small {
     to {
-        bottom: 50px; /* Posición diferente */
-        right: 150px;
+        top: calc(100vh + 100px);
+        left: calc(100vw + 100px);
+        transform: rotate(10deg);
     }
 }
 
@@ -125,7 +125,7 @@ form {
     box-shadow: 0 8px 25px rgba(0,0,0,0.25);
     width: 320px;
     position: relative;
-    z-index: 1;
+    z-index: 1; /* Asegura que el formulario esté sobre las guacamayas */
     transform: scale(1.05);
     transition: transform 0.3s ease-in-out;
 }
@@ -283,5 +283,6 @@ form.addEventListener("submit", async (e) => {
 
 </body>
 </html>
+
 
 
