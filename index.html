@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Sistema de Votación</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="icon" href="https://criterio.hn/wp-content/uploads/2021/12/voto-extrajero.jpg" type="image/png">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
@@ -328,57 +329,58 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/National_Party_of_Honduras_Logo.svg/2560px-National_Party_of_Honduras_Logo.svg.png" alt="PN">
     <h2>Partido Nacional</h2>
     <div class="info-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Nasry_Asfura.jpg" alt="Foto de Nasry Asfura">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdrEYw2OFdu_vhFyE9VgiRKR93UtPtBfv05g&s" alt="Foto de Nasry Asfura">
       <h3>Nasry Asfura</h3>
       <p>Partido de derecha y uno de los más antiguos de Honduras.</p>
     </div>
     <button onclick="vote('PN')">Votar</button>
-    <a href="#" class="more-info">Ver más información</a>
+    <a href="pn.html" class="more-info">Ver más información</a>
   </div>
   <div class="card" id="card-LIBRE">
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Libertad_y_Refundacion_Party_Logo.svg/800px-Libertad_y_Refundaci%C3%B3n_Party_Logo.svg.png" alt="LIBRE">
     <h2>Partido LIBRE</h2>
     <div class="info-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Xiomara_Castro.png/800px-Xiomara_Castro.png" alt="Foto de Xiomara Castro">
-      <h3>Xiomara Castro</h3>
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5Jwhxf5C2CID5gNEe2YGQUkZGY08T7vhYpg&s" alt="Foto de Xiomara Castro">
+      <h3>Rixi Moncada</h3>
       <p>Partido de izquierda, fundado por el expresidente Manuel Zelaya.</p>
     </div>
     <button onclick="vote('LIBRE')">Votar</button>
-    <a href="#" class="more-info">Ver más información</a>
+    <a href="lib.html" class="more-info">Ver más información</a>
   </div>
   <div class="card" id="card-PLH">
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Liberal_Party_of_Honduras_flag.svg/600px-Liberal_Party_of_Honduras_flag.svg.png" alt="PLH">
     <h2>Partido Liberal</h2>
     <div class="info-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Yani_Rosenthal_Hidalgo.jpg" alt="Foto de Yani Rosenthal">
-      <h3>Yani Rosenthal</h3>
+      <img src="https://pbs.twimg.com/profile_images/1876895679181713408/cf6uhHrH_400x400.jpg" alt="Foto de Yani Rosenthal">
+      <h3>Salvador Nasralla</h3>
       <p>Partido de centro-derecha, histórico en la política hondureña.</p>
     </div>
     <button onclick="vote('PLH')">Votar</button>
-    <a href="#" class="more-info">Ver más información</a>
+    <a href="pl.html" class="more-info">Ver más información</a>
   </div>
   <div class="card" id="card-Otro">
-    <img src="https://cdn-icons-png.flaticon.com/512/32/32386.png" alt="Otro">
+    <img src="https://d3h3bmeuj906e6.cloudfront.net/wp-content/uploads/2025/06/Partidos-minoritarios-RCV-1.jpg" alt="Otro">
     <h2>Otro</h2>
     <div class="info-box">
-      <h3>N/A</h3>
+      <img src="https://www.laprensa.hn/binrepository/1200x789/0c0/0d0/none/11004/UJDI/collage-candidatos_643740_20211223174554.jpg" alt="">
+      <h3>Partidos Minoritarios(OTROS)</h3>
       <p>Voto por un partido no listado.</p>
     </div>
     <button onclick="vote('Otro')">Votar</button>
-    <a href="#" class="more-info">Ver más información</a>
+
+    <a href="otros.html" class="more-info">Ver más información</a>
   </div>
   <div class="card" id="card-Ninguno">
-    <img src="https://cdn-icons-png.flaticon.com/512/3596/3596160.png" alt="Ninguno">
+    <img src="https://proceso.hn/wp-content/uploads/2024/09/eliminacion-partidos-CNE-696x471.jpg.webp" alt="Ninguno">
     <h2>Ninguno</h2>
     <div class="info-box">
+       <img src="https://accesoalajusticia.org/wp-content/uploads/2018/10/elecciones1-420x233.jpg" alt="Foto de Yani Rosenthal">
       <h3>N/A</h3>
       <p>Voto de abstención o nulo.</p>
     </div>
     <button onclick="vote('Ninguno')">Votar</button>
-    <a href="#" class="more-info">Ver más información</a>
   </div>
 </div>
-
 <canvas id="voteChart"></canvas>
 <canvas id="pieChart"></canvas>
 
@@ -635,4 +637,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
