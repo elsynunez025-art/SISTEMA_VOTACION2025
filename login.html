@@ -2,41 +2,179 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Login / Registro</title>
+<title>Login Votación</title>
+<link rel="icon" href="https://criterio.hn/wp-content/uploads/2021/12/voto-extrajero.jpg" type="image/png">
 <style>
-  body { 
-    font-family: Arial; 
-    background: #f0f4f8; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    height: 100vh; 
-  }
-  form { 
-    background: white; 
-    padding: 25px; 
-    border-radius: 12px; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
-    width: 320px; 
-  }
-  input, button { 
-    width: 100%; 
-    padding: 10px; 
-    margin: 8px 0; 
-    border-radius: 6px; 
-    border: 1px solid #ccc; 
+body {
+    font-family: Arial, sans-serif;
+    /* Degradado de colores de la bandera de Honduras y verde menta. */
+    background: linear-gradient(135deg, #00BCE4 0%, #ACE1AF 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+}
+
+/* La bandera de Honduras como un patrón sutil de fondo */
+body::before { /* Este pseudoelemento lo usaremos para una de las guacamayas */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* URL de una bandera de Honduras. */
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmcBUewPuiDIZrjhXTqafd_Vp417I_ZTR9LQ&s');
+    background-size: 50% auto;
+    background-position: center;
+    background-repeat: repeat;
+    opacity: 0.08;
+    z-index: -2; /* Enviamos la bandera más al fondo para que las guacamayas estén por encima */
+}
+
+/* Guacamaya grande saliendo de abajo-derecha */
+.macaw-1 {
+    content: '';
+    position: absolute;
+    bottom: -150px;
+    right: -150px;
+    width: 300px; /* Tamaño grande */
+    height: 300px;
+    background-image: url('im.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: -1;
+    opacity: 0.9;
+    animation: fly-in-large 2.5s forwards ease-out;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
+    
+    animation-delay: 0s; /* Empieza inmediatamente */
+}
+
+/* Guacamaya mediana saliendo de abajo-derecha */
+.macaw-2 {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    right: -80px;
+    width: 400px; /* Tamaño mediano */
+    height: 200px;
+    background-image: url('im.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: -1;
+    opacity: 0.85;
+    animation: fly-in-medium 2.8s forwards ease-in-out;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+  
+    animation-delay: 0.5s; /* Empieza un poco después */
+}
+
+/* Guacamaya pequeña saliendo de abajo-derecha */
+.macaw-3 {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    right: -0px;
+    width: 120px; /* Tamaño pequeño */
+    height: 120px;
+    background-image: url('im.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: -1;
+    opacity: 0.8;
+    animation: fly-in-small 3s forwards ease-out;
+    filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.2));
+  
+    animation-delay: 1s; /* Empieza más tarde */
+}
+
+/* Animación para la guacamaya grande */
+@keyframes fly-in-large {
+    to {
+        bottom: 80px;
+        right: 40px;
+        
+    }
+}
+
+/* Animación para la guacamaya mediana */
+@keyframes fly-in-medium {
+    to {
+        bottom: 120px; /* Posición diferente */
+        right: 80px;
+    }
+}
+
+/* Animación para la guacamaya pequeña */
+@keyframes fly-in-small {
+    to {
+        bottom: 50px; /* Posición diferente */
+        right: 150px;
+    }
+}
+
+form {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    width: 320px;
+    position: relative;
+    z-index: 1;
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}
+
+form:hover {
+    transform: scale(1.1);
+}
+
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
     font-size: 1em;
-  }
-  button { 
-    background: #007bff; 
-    color: white; 
-    font-weight: 700; 
-    border: none; 
-    cursor: pointer; 
-  }
-  button:hover { background: #0056b3; }
-  .error { color: red; font-weight: 700; margin-top: 10px; }
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.error {
+    color: red;
+    font-weight: 700;
+    margin-top: 10px;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
 </style>
+</head>
+<body>
+    <div class="macaw-1"></div>
+    <div class="macaw-2"></div>
+    <div class="macaw-3"></div>
 </head>
 <body>
 
@@ -145,3 +283,4 @@ form.addEventListener("submit", async (e) => {
 
 </body>
 </html>
+
