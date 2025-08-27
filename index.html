@@ -393,7 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = "login.html";
     return;
   }
-
+  
   const fullName = user.name;
   const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/847/847969.png";
   document.getElementById("profile-name").textContent = fullName;
@@ -458,10 +458,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const info = document.getElementById("userVoteInfo");
     info.textContent = alreadyVoted ? `Actualmente has votado por: ${partidosInfo[alreadyVoted].nombre}` : "Aún no has votado.";
   }
-
+  const backendURL = "https://sistema-votacion2025hn.onrender.com"; 
   async function fetchVotes(){
     try {
-      const res = await fetch("http://localhost:3000/api/votes");
+      const res = await fetch(`${backendURL}/api/votes`);
       if (!res.ok) throw new Error("Error en la respuesta del servidor");
       const voteData = await res.json();
       updateCharts(voteData);
@@ -550,7 +550,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/api/vote", {
+     const res = await fetch(`${backendURL}/api/vote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: user.userId, party })
@@ -575,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(deleteCount >= 4) return showMessage("Has alcanzado el límite de 4 eliminaciones.","error");
 
     try {
-      const res = await fetch("http://localhost:3000/api/vote", {
+     const res = await fetch(`${backendURL}/api/vote`, {
         method: "DELETE",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ userId: user.userId })
@@ -635,3 +635,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
